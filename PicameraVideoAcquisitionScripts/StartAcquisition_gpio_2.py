@@ -4,7 +4,7 @@ import time
 import datetime as dt
 from picamera import PiCamera
 from threading import Thread, Event
-from queue import Queue, Empty
+from Queue import Queue, Empty
 import sys, getopt
 import argparse
 import RPi.GPIO as GPIO
