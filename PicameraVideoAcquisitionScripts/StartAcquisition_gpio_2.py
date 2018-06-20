@@ -3,6 +3,7 @@ import io
 import time
 import datetime as dt
 from picamera import PiCamera
+
 from threading import Thread, Event
 from Queue import Queue, Empty
 import sys, getopt
