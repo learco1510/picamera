@@ -27,7 +27,7 @@ AWB_MODE = 'off'
 AWB_GAINS = 1.4
 #TTL Pulse BounceTme in milliseconds
 BOUNCETIME=10
-camId = str(4)
+camId = str(2)
 
 #video, timestamps and ttl file name
 VIDEO_FILE_NAME = "cam" + camId + "_output_" + str(dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")) + ".h264"
@@ -40,7 +40,7 @@ runningTimeHours, runningTimeMinutes, runningTimeSeconds = 0,0,0
 #set raspberry pi board layout to BCM
 GPIO.setmode(GPIO.BCM)
 #pin number to receive TTL input
-pinTTL = 17
+pinTTL = 11
 #set the pin as input pin
 GPIO.setup(pinTTL, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 #add event detection (both falling edge and rising edge) script to GPIO pin
