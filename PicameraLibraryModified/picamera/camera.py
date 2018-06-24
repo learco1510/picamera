@@ -325,7 +325,7 @@ class PiCamera(object):
     def __init__(
             self, camera_num=0, stereo_mode='none', stereo_decimate=False,
             resolution=None, framerate=None, sensor_mode=0, led_pin=None,
-            clock_mode='reset'):
+            clock_mode='raw'):
         bcm_host.bcm_host_init()
         mimetypes.add_type('application/h264',  '.h264',  False)
         mimetypes.add_type('application/mjpeg', '.mjpg',  False)
@@ -2009,7 +2009,7 @@ class PiCamera(object):
             cc.num_preview_video_frames = max(3, framerate // 10)
             cc.stills_capture_circular_buffer_height = 0
             cc.fast_preview_resume = 0
-            cc.use_stc_timestamp = mmal.MMAL_PARAM_TIMESTAMP_MODE_RAW_STC
+            cc.use_stc_timestamp = clock_mode
             self._camera.control.params[mmal.MMAL_PARAMETER_CAMERA_CONFIG] = cc
 
             # Determine the FPS range for the requested framerate
