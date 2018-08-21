@@ -27,7 +27,7 @@ AWB_MODE = 'off'
 AWB_GAINS = 1.4
 #TTL Pulse BounceTme in milliseconds
 BOUNCETIME=10
-camId = str(2)
+camId = str(1)
 
 #video, timestamps and ttl file name
 VIDEO_FILE_NAME = "cam" + camId + "_output_" + str(dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")) + ".h264"
