@@ -4,7 +4,7 @@ import time
 import datetime as dt
 from picamera import PiCamera
 from threading import Thread, Event
-from Queue import Queue, Empty
+from queue import Queue, Empty
 import sys, getopt
 import argparse
 import RPi.GPIO as GPIO
@@ -40,7 +40,7 @@ runningTimeHours, runningTimeMinutes, runningTimeSeconds = 0,0,0
 #set raspberry pi board layout to BCM
 GPIO.setmode(GPIO.BCM)
 #pin number to receive TTL input
-pinTTL = 11
+pinTTL = 17
 #set the pin as input pin
 GPIO.setup(pinTTL, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 #add event detection (both falling edge and rising edge) script to GPIO pin
@@ -104,6 +104,7 @@ class TimestampOutput(object):
 
     def write(self, buf):
         if self.camera.frame.complete and self.camera.frame.timestamp is not None:
+            print("self.camera.frame.timestamp:{}".format(self.camera.frame.timestamp))
             self._timestamps.append((
                 self.camera.frame.timestamp,
                 self.camera.dateTime,
