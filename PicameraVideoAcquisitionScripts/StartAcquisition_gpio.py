@@ -10,6 +10,9 @@ import argparse
 import RPi.GPIO as GPIO
 import os
 
+sys.settrace
+ignoreCalls=0
+
 #set high thread priority
 os.nice(20)
 
@@ -93,15 +96,24 @@ class TimestampOutput(object):
         self._ttlTimestamps = []
     
     def ttlTimestampsWrite(self, input_pin):
+        global ignoreCalls
+        if ignoreCalls==1:
+            return
+        ignoreCalls=1
+        
         inputState = GPIO.input(input_pin)
-        GPIO.remove_event_detect(input_pin)
+        #GPIO.remove_event_detect(input_pin)
+        print("ttl in")
         if self.camera.frame.timestamp is not None:
+            print("ttl if")
             self._ttlTimestamps.append((inputState, self.camera.timestamp, self.camera.frame.timestamp, time.time(), time.clock_gettime(time.CLOCK_REALTIME)))
         else:
             self._ttlTimestamps.append((inputState, self.camera.timestamp, -1, time.time(), time.clock_gettime(time.CLOCK_REALTIME)))
+            print("ttl else")
         #print(inputStatem, self.camera.timestamp, self.camera.frame.timestamp)
-        GPIO.add_event_detect(pinTTL, GPIO.BOTH, bouncetime=BOUNCETIME)
-
+        #GPIO.add_event_detect(pinTTL, GPIO.BOTH, bouncetime=BOUNCETIME)
+        ignoreCalls=0
+        
     def write(self, buf):
         if self.camera.frame.complete and self.camera.frame.timestamp is not None:
             print("self.camera.frame.timestamp:{}".format(self.camera.frame.timestamp))
@@ -160,6 +172,7 @@ with PiCamera(resolution=(WIDTH, HEIGHT), framerate=FRAMERATE) as camera:
 
     output = TimestampOutput(camera, VIDEO_FILE_NAME, TIMESTAMP_FILE_NAME, TTL_FILE_NAME)
     GPIO.add_event_callback(pinTTL, output.ttlTimestampsWrite)
+
     try:
         camera.start_preview()
         # Construct an instance of our custom output splitter with a filename  and a connected socket
